@@ -35,10 +35,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         menuItemCancelarVenda = new javax.swing.JMenuItem();
         subMenuCadastro = new javax.swing.JMenu();
         menuItemUsuario = new javax.swing.JMenuItem();
-        subMenuCliente = new javax.swing.JMenu();
         menuItemCliente = new javax.swing.JMenuItem();
-        menuItemAlterarCliente = new javax.swing.JMenuItem();
-        menuItemExcluirCliente = new javax.swing.JMenuItem();
         subMenuProduto = new javax.swing.JMenu();
         menuItemNovoProduto = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -90,24 +87,13 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         });
         subMenuCadastro.add(menuItemUsuario);
 
-        subMenuCliente.setText("Cliente");
-
-        menuItemCliente.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
-        menuItemCliente.setText("Novo cliente");
+        menuItemCliente.setText("Cliente");
         menuItemCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemClienteActionPerformed(evt);
             }
         });
-        subMenuCliente.add(menuItemCliente);
-
-        menuItemAlterarCliente.setText("Alterar cliente");
-        subMenuCliente.add(menuItemAlterarCliente);
-
-        menuItemExcluirCliente.setText("Excluir cliente");
-        subMenuCliente.add(menuItemExcluirCliente);
-
-        subMenuCadastro.add(subMenuCliente);
+        subMenuCadastro.add(menuItemCliente);
 
         subMenuProduto.setText("Produto");
 
@@ -198,8 +184,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemUsuarioActionPerformed
 
     private void menuItemClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemClienteActionPerformed
-        //JanelaCadastroCliente janelaCadastroCliente = new JanelaCadastroCliente();
-        //janelaCadastroCliente.setVisible(rootPaneCheckingEnabled);
+        JanelaCadastroCliente janelaCadastroCliente = new JanelaCadastroCliente();
+        janelaCadastroCliente.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_menuItemClienteActionPerformed
 
     /**
@@ -243,11 +229,9 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuArquivo;
-    private javax.swing.JMenuItem menuItemAlterarCliente;
     private javax.swing.JMenuItem menuItemAlterarVenda;
     private javax.swing.JMenuItem menuItemCancelarVenda;
     private javax.swing.JMenuItem menuItemCliente;
-    private javax.swing.JMenuItem menuItemExcluirCliente;
     private javax.swing.JMenuItem menuItemExcluirProduto;
     private javax.swing.JMenuItem menuItemNovaVenda;
     private javax.swing.JMenuItem menuItemNovoProduto;
@@ -259,7 +243,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemUsuario;
     private javax.swing.JMenu menuRelatorio;
     private javax.swing.JMenu subMenuCadastro;
-    private javax.swing.JMenu subMenuCliente;
     private javax.swing.JMenu subMenuProduto;
     private javax.swing.JMenu subMenuVenda;
     // End of variables declaration//GEN-END:variables

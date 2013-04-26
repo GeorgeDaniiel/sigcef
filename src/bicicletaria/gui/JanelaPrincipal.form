@@ -59,34 +59,14 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemUsuarioActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <Menu class="javax.swing.JMenu" name="subMenuCliente">
+                <MenuItem class="javax.swing.JMenuItem" name="menuItemCliente">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cliente"/>
                   </Properties>
-                  <SubComponents>
-                    <MenuItem class="javax.swing.JMenuItem" name="menuItemCliente">
-                      <Properties>
-                        <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                          <KeyStroke key="Ctrl+H"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Novo cliente"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemClienteActionPerformed"/>
-                      </Events>
-                    </MenuItem>
-                    <MenuItem class="javax.swing.JMenuItem" name="menuItemAlterarCliente">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Alterar cliente"/>
-                      </Properties>
-                    </MenuItem>
-                    <MenuItem class="javax.swing.JMenuItem" name="menuItemExcluirCliente">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Excluir cliente"/>
-                      </Properties>
-                    </MenuItem>
-                  </SubComponents>
-                </Menu>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemClienteActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <Menu class="javax.swing.JMenu" name="subMenuProduto">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Produto"/>

@@ -27,6 +27,7 @@ import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 //import javax.swing.JOptionPane;
 
@@ -39,13 +40,14 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     public static EntityManagerFactory fabricabic = Persistence.createEntityManagerFactory("BicicletariaPU");  
     private static Usuario usuario = new Usuario();
     private static UsuarioJpaController dao = new UsuarioJpaController(fabricabic);
-    List<Usuario> usu = new ArrayList<Usuario>();
+   
     
     public JanelaCadastroUsuario() {
                 
         initComponents();
         listarUsuarios();
         configurarEventos();
+        
         
     }
 
@@ -57,12 +59,12 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        GrupoSexo = new javax.swing.ButtonGroup();
         panelInformacoesBasicas = new javax.swing.JPanel();
         labelNome = new javax.swing.JLabel();
         textFieldNome = new javax.swing.JTextField();
         labelCPF = new javax.swing.JLabel();
         labelTipoUsuario = new javax.swing.JLabel();
-        jTipoUsuario = new javax.swing.JComboBox();
         textFieldCPF = new javax.swing.JTextField();
         labelAnoNascimento = new javax.swing.JLabel();
         textFieldAnoNascimento = new javax.swing.JTextField();
@@ -72,6 +74,8 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         }
         catch (Exception e) {
         }
+        jGerente = new javax.swing.JRadioButton();
+        jFuncionario = new javax.swing.JRadioButton();
         panelLoginSenha = new javax.swing.JPanel();
         labelLogin = new javax.swing.JLabel();
         textFieldLogin = new javax.swing.JTextField();
@@ -94,15 +98,23 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
 
         panelInformacoesBasicas.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Informações Básicas"));
 
+        labelNome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelNome.setText("Nome: *");
 
+        labelCPF.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelCPF.setText("CPF: *");
 
+        labelTipoUsuario.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelTipoUsuario.setText("Tipo de Usuário: *");
 
-        jTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Funcionário", "Gerente" }));
-
+        labelAnoNascimento.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelAnoNascimento.setText("Data de Nascimneto:");
+
+        GrupoSexo.add(jGerente);
+        jGerente.setText("Gerente");
+
+        GrupoSexo.add(jFuncionario);
+        jFuncionario.setText("Funcionário");
 
         javax.swing.GroupLayout panelInformacoesBasicasLayout = new javax.swing.GroupLayout(panelInformacoesBasicas);
         panelInformacoesBasicas.setLayout(panelInformacoesBasicasLayout);
@@ -114,18 +126,25 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                     .addComponent(labelAnoNascimento)
                     .addComponent(labelNome)
                     .addComponent(labelTipoUsuario))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelInformacoesBasicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textFieldNome)
                     .addGroup(panelInformacoesBasicasLayout.createSequentialGroup()
-                        .addComponent(textFieldAnoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(labelCPF)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelInformacoesBasicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFieldNome)
+                            .addGroup(panelInformacoesBasicasLayout.createSequentialGroup()
+                                .addComponent(textFieldAnoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                                .addComponent(labelCPF)
+                                .addGap(18, 18, 18)
+                                .addComponent(textFieldCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)))
+                        .addContainerGap())
+                    .addGroup(panelInformacoesBasicasLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jGerente)
                         .addGap(18, 18, 18)
-                        .addComponent(textFieldCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11))
-                    .addComponent(jTipoUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jFuncionario)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelInformacoesBasicasLayout.setVerticalGroup(
             panelInformacoesBasicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,16 +162,20 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelInformacoesBasicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTipoUsuario)
-                    .addComponent(jTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jGerente)
+                    .addComponent(jFuncionario))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         panelLoginSenha.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Login e Senha"));
 
+        labelLogin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelLogin.setText("Login: *");
 
+        jLSenha.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLSenha.setText("Senha: *");
 
+        jLConfirmarSenha.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLConfirmarSenha.setText("Confirmar senha: *");
 
         jConfirmarSenha.addActionListener(new java.awt.event.ActionListener() {
@@ -203,6 +226,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        buttonOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/Ok.png"))); // NOI18N
         buttonOK.setText("Inserir");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,6 +234,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             }
         });
 
+        buttonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/canc.png"))); // NOI18N
         buttonCancelar.setText("Cancelar");
         buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,6 +242,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             }
         });
 
+        jEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/edit.png"))); // NOI18N
         jEditar.setText("Editar");
         jEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,6 +268,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabela);
 
+        jExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/del.png"))); // NOI18N
         jExcluir.setText("Excluir");
         jExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,9 +288,9 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                     .addComponent(panelLoginSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
                         .addComponent(jExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -278,13 +305,14 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelLoginSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -297,12 +325,19 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
         setVisible(false);
     }//GEN-LAST:event_buttonCancelarActionPerformed
-
+    
+    public String escolheTipo() {
+ 
+    if (jGerente.isSelected()) {
+         return "Gerente";
+    } else {
+            return "Funcionario";
+    }
+ 
+}
+    
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-/*
-        if(textFieldNome.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios");
-        }*/
+
         try {
                Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException ex) {
@@ -315,7 +350,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                     ResultSet rs = st.executeQuery(query);
                     if(rs.next()){
 
-                          JOptionPane.showMessageDialog(null," Já existe um usuário cadastrado com este CPF");
+                          JOptionPane.showMessageDialog(this," Já existe um usuário cadastrado com este CPF");
                      
                     }
                     else if(textFieldNome.getText().equals("")||textFieldCPF.getText().equals("")){
@@ -325,9 +360,12 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                         
                          usuario.setNome(textFieldNome.getText().toLowerCase());
                          usuario.setCpf(textFieldCPF.getText());
+                         usuario.setTipousuario(escolheTipo());
                          usuario.setDatanascimento(textFieldAnoNascimento.getText());
                          usuario.setLogin(textFieldLogin.getText().toLowerCase());
                          usuario.setSenha(jSenha.getText());
+                         confirmarSenha(jConfirmarSenha.getText());
+                                 
                     try {
                         dao.create(usuario);
                        //JOptionPane.showMessageDialog(null," Já existe um usuário cadastrado com este CPF");
@@ -343,7 +381,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 }       
   
     }//GEN-LAST:event_buttonOKActionPerformed
-
+   
     private void jEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditarActionPerformed
         
          limparCampos();
@@ -366,16 +404,15 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jEditarActionPerformed
 
     private void configurarTabela(){
+       
         DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
         direita.setHorizontalAlignment(SwingConstants.RIGHT);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+       
     }
     public void configurarEventosTabela(){
 
         int indice = tabela.getSelectedRow();
-        //textFieldNome.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
-           
-        //JOptionPane.showMessageDialog(null, indice);
         if(indice < 0){ 
         }
       
@@ -405,22 +442,23 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         
         try {
             dao.destroy(cpf);
-            listarUsuarios();
-            limparCampos();
            
             //JOptionPane.showConfirmDialog(null, "Deseja excluir esse registro?");
             
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+        limparCampos();
+        listarUsuarios();
        
         
     }//GEN-LAST:event_jExcluirActionPerformed
    
     public void listarUsuarios(){
+            criarTabela();
+            List<Usuario> usu = new ArrayList<Usuario>();
             usu = dao.findUsuarioEntities();
-            String[] campos = new String [] {null, null, null, null, null};
-            boolean[] canEdit = new boolean []{ false, false, false, false, false };
+            //String[] campos = new String [] {null, null, null, null, null};
             for(int i = 0; i < usu.size(); i++){ //usu.size() verifica o tamanho List  
                tabela.setValueAt(usu.get(i).getNome(), i, 0); //linha i, coluna 0  
                tabela.setValueAt(usu.get(i).getCpf(), i, 1); //linha i, coluna 1  
@@ -432,9 +470,15 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
   
     }//GEN-LAST:event_tabelaMouseClicked
-
+    public void confirmarSenha(String x)
+    {
+        if(jSenha.getText() != x){
+            
+            JOptionPane.showMessageDialog(labelNome, "A senha não confere; ");
+        }
+    }
     private void jConfirmarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmarSenhaActionPerformed
-
+        
     }//GEN-LAST:event_jConfirmarSenhaActionPerformed
     
     public void limparCampos()
@@ -475,17 +519,33 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void criarTabela(){
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Nome", "CPF", "Data de Nascimento", "Login", "Senha"
+            }
+        ));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup GrupoSexo;
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonOK;
     private javax.swing.JPasswordField jConfirmarSenha;
     private javax.swing.JButton jEditar;
     private javax.swing.JButton jExcluir;
+    private javax.swing.JRadioButton jFuncionario;
+    private javax.swing.JRadioButton jGerente;
     private javax.swing.JLabel jLConfirmarSenha;
     private javax.swing.JLabel jLSenha;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPasswordField jSenha;
-    private javax.swing.JComboBox jTipoUsuario;
     private javax.swing.JLabel labelAnoNascimento;
     private javax.swing.JLabel labelCPF;
     private javax.swing.JLabel labelLogin;
