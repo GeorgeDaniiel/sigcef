@@ -176,6 +176,18 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
             }
         });
 
+        try {
+            javax.swing.text.MaskFormatter cpf_mask = new javax.swing.text.MaskFormatter("###.###.###-##");
+            jCPF = new javax.swing.JFormattedTextField(cpf_mask);
+        }
+        catch (Exception e) {
+        }
+        jCPF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jCPFKeyTyped(evt);
+            }
+        });
+
         jCEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceara", "Distrito Federal", "Espirito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Para", "Paraiba", "Parana", "Pernambuco", "Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins" }));
 
         javax.swing.GroupLayout jPDadosPessoaisLayout = new javax.swing.GroupLayout(jPDadosPessoais);
@@ -401,6 +413,13 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     private void jCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCancelarActionPerformed
         setVisible(false);       // TODO add your handling code here:
     }//GEN-LAST:event_jCancelarActionPerformed
+
+    private void jCPFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCPFKeyTyped
+        String caracteres="0987654321";
+        if(!caracteres.contains(evt.getKeyChar()+"")){
+             evt.consume();
+        }
+    }//GEN-LAST:event_jCPFKeyTyped
 
     /**
      * @param args the command line arguments

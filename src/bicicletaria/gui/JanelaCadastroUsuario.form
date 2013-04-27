@@ -183,6 +183,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="textFieldCPF">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textFieldCPFKeyTyped"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try {&#xd;&#xa;    javax.swing.text.MaskFormatter jcpf = new javax.swing.text.MaskFormatter(&quot;###.###.###-##&quot;);&#xd;&#xa;    textFieldCPF = new javax.swing.JFormattedTextField(jcpf);&#xd;&#xa;}&#xd;&#xa;catch (Exception e) {&#xd;&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelAnoNascimento">
           <Properties>

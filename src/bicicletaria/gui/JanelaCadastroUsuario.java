@@ -66,6 +66,12 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         labelCPF = new javax.swing.JLabel();
         labelTipoUsuario = new javax.swing.JLabel();
         textFieldCPF = new javax.swing.JTextField();
+        try {
+            javax.swing.text.MaskFormatter jcpf = new javax.swing.text.MaskFormatter("###.###.###-##");
+            textFieldCPF = new javax.swing.JFormattedTextField(jcpf);
+        }
+        catch (Exception e) {
+        }
         labelAnoNascimento = new javax.swing.JLabel();
         textFieldAnoNascimento = new javax.swing.JTextField();
         try {
@@ -106,6 +112,12 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
 
         labelTipoUsuario.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelTipoUsuario.setText("Tipo de Usuário: *");
+
+        textFieldCPF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldCPFKeyTyped(evt);
+            }
+        });
 
         labelAnoNascimento.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelAnoNascimento.setText("Data de Nascimneto:");
@@ -364,7 +376,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                          usuario.setDatanascimento(textFieldAnoNascimento.getText());
                          usuario.setLogin(textFieldLogin.getText().toLowerCase());
                          usuario.setSenha(jSenha.getText());
-                         confirmarSenha(jConfirmarSenha.getText());
+                         //confirmarSenha(jConfirmarSenha.getText());
                                  
                     try {
                         dao.create(usuario);
@@ -460,12 +472,18 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             usu = dao.findUsuarioEntities();
             //String[] campos = new String [] {null, null, null, null, null};
             for(int i = 0; i < usu.size(); i++){ //usu.size() verifica o tamanho List  
-               tabela.setValueAt(usu.get(i).getNome(), i, 0); //linha i, coluna 0  
-               tabela.setValueAt(usu.get(i).getCpf(), i, 1); //linha i, coluna 1  
+               tabela.setValueAt(usu.get(i).getNome(), i, 0);
+               isCellEditable(i, 0);//linha i, coluna 0  
+               tabela.setValueAt(usu.get(i).getCpf(), i, 1);
+               tabela.isCellEditable(i, 1);//linha i, coluna 1  
                tabela.setValueAt(usu.get(i).getDatanascimento(), i, 2);
+               tabela.isCellEditable(i, 2);
                tabela.setValueAt(usu.get(i).getLogin(), i, 3);
+               tabela.isCellEditable(i, 3);
                tabela.setValueAt(usu.get(i).getSenha(), i, 4);  
+               tabela.isCellEditable(i, 4);
             }
+            //tabela.setEnabled(false); 
         }
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
   
@@ -474,13 +492,22 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     {
         if(jSenha.getText() != x){
             
-            JOptionPane.showMessageDialog(labelNome, "A senha não confere; ");
+            JOptionPane.showMessageDialog(this, "A senha não confere; ");
         }
     }
     private void jConfirmarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmarSenhaActionPerformed
         
     }//GEN-LAST:event_jConfirmarSenhaActionPerformed
-    
+
+    private void textFieldCPFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldCPFKeyTyped
+        String caracteres="0987654321";
+        if(!caracteres.contains(evt.getKeyChar()+"")){
+             evt.consume();
+        }
+    }//GEN-LAST:event_textFieldCPFKeyTyped
+    public boolean isCellEditable(int row, int col) {  
+        return false;  
+    }
     public void limparCampos()
     {
         textFieldNome.setText("");

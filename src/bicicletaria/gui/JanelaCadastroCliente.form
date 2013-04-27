@@ -422,6 +422,12 @@
             <Component class="javax.swing.JTextField" name="jTelefone">
             </Component>
             <Component class="javax.swing.JTextField" name="jCPF">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jCPFKeyTyped"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="try {&#xd;&#xa;    javax.swing.text.MaskFormatter cpf_mask = new javax.swing.text.MaskFormatter(&quot;###.###.###-##&quot;);&#xd;&#xa;    jCPF = new javax.swing.JFormattedTextField(cpf_mask);&#xd;&#xa;}&#xd;&#xa;catch (Exception e) {&#xd;&#xa;}"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="jData">
             </Component>
