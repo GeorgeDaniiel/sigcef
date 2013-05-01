@@ -33,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
 
     /**
  *
- * @author Florêncio
+ * @author George Daniel
  */
 public class JanelaCadastroUsuario extends javax.swing.JFrame {
     
@@ -41,6 +41,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     private static Usuario usuario = new Usuario();
     private static UsuarioJpaController dao = new UsuarioJpaController(fabricabic);
    
+    List<Usuario> usu = new ArrayList<Usuario>();
     
     public JanelaCadastroUsuario() {
                 
@@ -266,13 +267,27 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
-                {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
                 "Nome", "CPF", "Data de Nascimento", "Login", "Senha"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
@@ -316,9 +331,9 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 .addComponent(panelInformacoesBasicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelLoginSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -340,11 +355,11 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     
     public String escolheTipo() {
  
-    if (jGerente.isSelected()) {
-         return "Gerente";
-    } else {
-            return "Funcionario";
-    }
+        if (jGerente.isSelected()) {
+              return "Gerente";
+        } else {
+             return "Funcionario";
+        }
  
 }
     
@@ -365,7 +380,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                           JOptionPane.showMessageDialog(this," Já existe um usuário cadastrado com este CPF");
                      
                     }
-                    else if(textFieldNome.getText().equals("")||textFieldCPF.getText().equals("")){
+                    else if(textFieldNome.getText().equals("")||textFieldCPF.getText().equals("")){  
                         JOptionPane.showMessageDialog(null,"Campo Vazio", "Error",1);
                     }
                     else{
@@ -387,6 +402,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                         Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     listarUsuarios();
+                    limparCampos();
                     }
                 }catch (SQLException ex) {
                      Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
@@ -396,69 +412,72 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
    
     private void jEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditarActionPerformed
         
-         limparCampos();
+                  
+            Usuario usu = new Usuario();
+            usu.setNome(textFieldNome.getText());
+            usu.setCpf(textFieldCPF.getText());
+            usu.setDatanascimento(textFieldAnoNascimento.getText());
+            usu.setLogin(textFieldLogin.getText().toLowerCase());
+            usu.setSenha(jSenha.getText());
          
-         listarUsuarios();
-         Usuario usu = new Usuario();
-         usu.setNome(textFieldNome.getText());
-         //textFieldCPF.setVisible(false);
-         usu.setDatanascimento(textFieldAnoNascimento.getText());
-         usu.setLogin(textFieldLogin.getText().toLowerCase());
-         usu.setSenha(jSenha.getText());
-         
-        try {
-            dao.edit(usu);
-        } catch (NonexistentEntityException ex) {
-            Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            try {
+                dao.edit(usu);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            limparCampos();
+            listarUsuarios();
     }//GEN-LAST:event_jEditarActionPerformed
 
-    private void configurarTabela(){
-       
-        DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
-        direita.setHorizontalAlignment(SwingConstants.RIGHT);
-        tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
-       
-    }
     public void configurarEventosTabela(){
-
-        int indice = tabela.getSelectedRow();
-        if(indice < 0){ 
-        }
-      
-        else{
-            textFieldNome.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
-            textFieldCPF.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
-            textFieldAnoNascimento.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString()); 
-            textFieldLogin.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
-            jSenha.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString()); 
-        }
+ 
+            int indice = tabela.getSelectedRow();
+           // JOptionPane.showMessageDialog(this, indice);
+            
+            if(indice > usu.size() ){  
+                limparCampos();
+            }
+            
+            else{
+                textFieldNome.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
+                textFieldCPF.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
+                textFieldAnoNascimento.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString()); 
+                textFieldLogin.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
+                jSenha.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString()); 
+            }
 
     }
     
     private void configurarEventos(){
-        tabela.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e){
-                configurarEventosTabela();
-                configurarTabela();
-            }
-        });
+        
+        //String z = textFieldCPF.getText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
+        //if(tabela.getValueAt(tabela.getSelectedRow(), 1).toString() != ""){
+            tabela.addMouseListener(new MouseAdapter() {
+                @Override
+
+                    public void mouseClicked(MouseEvent e){
+                        configurarEventosTabela();
+                        //configurarTabela();
+                    }
+            });
+        //}
     }
     
     private void jExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExcluirActionPerformed
         
         String cpf = textFieldCPF.getText();
         
-        try {
-            dao.destroy(cpf);
-           
-            //JOptionPane.showConfirmDialog(null, "Deseja excluir esse registro?");
-            
-        } catch (NonexistentEntityException ex) {
-            Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        if(JOptionPane.showConfirmDialog(this, "Deseja excluir esse registro?") == 0){
+            try {
+                dao.destroy(cpf);
+
+                //JOptionPane.showConfirmDialog(null, "Deseja excluir esse registro?");
+
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         limparCampos();
         listarUsuarios();
@@ -467,23 +486,17 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jExcluirActionPerformed
    
     public void listarUsuarios(){
-            criarTabela();
-            List<Usuario> usu = new ArrayList<Usuario>();
+            criarTabela();         
             usu = dao.findUsuarioEntities();
-            //String[] campos = new String [] {null, null, null, null, null};
-            for(int i = 0; i < usu.size(); i++){ //usu.size() verifica o tamanho List  
-               tabela.setValueAt(usu.get(i).getNome(), i, 0);
-               isCellEditable(i, 0);//linha i, coluna 0  
+            for(int i = 0; i < usu.size(); i++){ 
+                
+               tabela.setValueAt(usu.get(i).getNome(), i, 0); 
                tabela.setValueAt(usu.get(i).getCpf(), i, 1);
-               tabela.isCellEditable(i, 1);//linha i, coluna 1  
-               tabela.setValueAt(usu.get(i).getDatanascimento(), i, 2);
-               tabela.isCellEditable(i, 2);
+               tabela.setValueAt(usu.get(i).getDatanascimento(), i, 2);      
                tabela.setValueAt(usu.get(i).getLogin(), i, 3);
-               tabela.isCellEditable(i, 3);
                tabela.setValueAt(usu.get(i).getSenha(), i, 4);  
-               tabela.isCellEditable(i, 4);
             }
-            //tabela.setEnabled(false); 
+            
         }
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
   
@@ -548,9 +561,8 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     }
     
     public void criarTabela(){
-        tabela.setModel(new javax.swing.table.DefaultTableModel(
+       tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null}
@@ -558,8 +570,24 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             new String [] {
                 "Nome", "CPF", "Data de Nascimento", "Login", "Senha"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GrupoSexo;
     private javax.swing.JButton buttonCancelar;

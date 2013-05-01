@@ -51,7 +51,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Bicicletaria - Versão Alpha 0.0.324");
+        setTitle("Bicicletaria - Versão Alpha 1.0");
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
