@@ -5,6 +5,7 @@
     <class>bicicletaria.modelo.Usuario</class>
     <class>bicicletaria.dao.Usuario</class>
     <class>bicicletaria.modelo.Cliente</class>
+    <class>bicicletaria.modelo.Fornecedor</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/bicicletaria"/>
       <property name="javax.persistence.jdbc.password" value="root"/>
