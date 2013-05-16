@@ -36,6 +36,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         subMenuCadastro = new javax.swing.JMenu();
         menuItemUsuario = new javax.swing.JMenuItem();
         menuItemCliente = new javax.swing.JMenuItem();
+        jMenuItemFornecedor = new javax.swing.JMenuItem();
         subMenuProduto = new javax.swing.JMenu();
         menuItemNovoProduto = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -94,6 +95,14 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
         subMenuCadastro.add(menuItemCliente);
+
+        jMenuItemFornecedor.setText("Fornecedor");
+        jMenuItemFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFornecedorActionPerformed(evt);
+            }
+        });
+        subMenuCadastro.add(jMenuItemFornecedor);
 
         subMenuProduto.setText("Produto");
 
@@ -188,6 +197,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         janelaCadastroCliente.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_menuItemClienteActionPerformed
 
+    private void jMenuItemFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFornecedorActionPerformed
+        JanelaCadastroFornecedor janelaCadastroFornecedor = new JanelaCadastroFornecedor();
+        janelaCadastroFornecedor.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jMenuItemFornecedorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -227,6 +241,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItemFornecedor;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuArquivo;
     private javax.swing.JMenuItem menuItemAlterarVenda;
