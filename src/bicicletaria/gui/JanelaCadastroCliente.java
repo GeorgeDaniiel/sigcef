@@ -77,7 +77,19 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
         jBairro = new javax.swing.JTextField();
         jCidade = new javax.swing.JTextField();
         jCelular = new javax.swing.JTextField();
+        try {
+            javax.swing.text.MaskFormatter celular = new javax.swing.text.MaskFormatter("(##)####-####");
+            jCelular = new javax.swing.JFormattedTextField(celular);
+        }
+        catch (Exception e) {
+        }
         jTelefone = new javax.swing.JTextField();
+        try {
+            javax.swing.text.MaskFormatter telefone = new javax.swing.text.MaskFormatter("(##)####-####");
+            jTelefone = new javax.swing.JFormattedTextField(telefone);
+        }
+        catch (Exception e) {
+        }
         jCPF = new javax.swing.JTextField();
         jData = new javax.swing.JTextField();
         try {
@@ -89,8 +101,6 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
         jCep = new javax.swing.JTextField();
         jEmail = new javax.swing.JTextField();
         jCEstado = new javax.swing.JComboBox();
-        jPesquisar = new javax.swing.JTextField();
-        jBuscar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -111,6 +121,11 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
 
         jEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/edit.png"))); // NOI18N
         jEditar.setText("Editar");
+        jEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jEditarActionPerformed(evt);
+            }
+        });
 
         jExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/del.png"))); // NOI18N
         jExcluir.setText("Excluir");
@@ -215,13 +230,6 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
 
         jCEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceara", "Distrito Federal", "Espirito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Para", "Paraiba", "Parana", "Pernambuco", "Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins" }));
 
-        jBuscar.setText("Buscar");
-        jBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBuscarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPDadosPessoaisLayout = new javax.swing.GroupLayout(jPDadosPessoais);
         jPDadosPessoais.setLayout(jPDadosPessoaisLayout);
         jPDadosPessoaisLayout.setHorizontalGroup(
@@ -269,44 +277,34 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
                             .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
                                 .addComponent(jLCPF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(248, 248, 248)))
+                        .addGap(6, 6, 6)
                         .addGroup(jPDadosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCep)
+                            .addComponent(jBairro)
                             .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addGroup(jPDadosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jCep)
-                                    .addComponent(jBairro)
                                     .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
-                                        .addGroup(jPDadosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
-                                                .addComponent(jLData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(3, 3, 3))
-                                            .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
-                                                .addComponent(jLBairro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(82, 82, 82))
-                                            .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
-                                                .addComponent(jLCep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(96, 96, 96))
-                                            .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
-                                                .addComponent(jLEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(78, 78, 78))
-                                            .addComponent(jData))
-                                        .addGap(50, 50, 50))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPDadosPessoaisLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                                .addComponent(jPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5)
-                                .addComponent(jBuscar)))))
+                                        .addComponent(jLData, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                                        .addGap(3, 3, 3))
+                                    .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
+                                        .addComponent(jLBairro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(82, 82, 82))
+                                    .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
+                                        .addComponent(jLCep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(96, 96, 96))
+                                    .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
+                                        .addComponent(jLEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(78, 78, 78))
+                                    .addComponent(jData))
+                                .addGap(50, 50, 50)))))
                 .addContainerGap())
         );
         jPDadosPessoaisLayout.setVerticalGroup(
             jPDadosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPDadosPessoaisLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPDadosPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBuscar))
+                .addComponent(jLNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -358,7 +356,7 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 11, Short.MAX_VALUE)
+            .addGap(0, 20, Short.MAX_VALUE)
         );
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
@@ -387,8 +385,7 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabela.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tabela.setAutoscrolls(false);
+        tabela.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
@@ -403,13 +400,13 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -462,14 +459,6 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
              evt.consume();
         }
     }//GEN-LAST:event_jCPFKeyTyped
-
-    private void jBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscarActionPerformed
-        
-       // if(jPesquisar.getText()!=null){
-        //}
-        
-        //new JanelaListaCliente().setVisible(true);
-    }//GEN-LAST:event_jBuscarActionPerformed
 
     private void jCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCancelarActionPerformed
         setVisible(false);       // TODO add your handling code here:
@@ -532,8 +521,7 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExcluirActionPerformed
-         String cpf = jCPF.getText();
-        
+        String cpf = jCPF.getText();
         if(JOptionPane.showConfirmDialog(this, "Deseja excluir esse registro?") == 0){
             try {
                 
@@ -546,6 +534,32 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
         limparCampos();
         listarCliente();
     }//GEN-LAST:event_jExcluirActionPerformed
+
+    private void jEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditarActionPerformed
+            
+            Cliente cli = new Cliente();
+            cli.setNome(jNome.getText());//.toLowerCase());
+            cli.setCpf(jCPF.getText());
+            cli.setDatanascimento(jData.getText());
+            cli.setBairro(jBairro.getText());
+            cli.setEndereco(jEndereco.getText());
+            cli.setCep(jCep.getText());
+            cli.setTelefone(jTelefone.getText());
+            cli.setCelular(jCelular.getText());
+            cli.setEmail(jEmail.getText());
+            cli.setCidade(jCidade.getText());
+            cli.setEstado(jCEstado.getSelectedItem().toString());
+         
+            try {
+                dao.edit(cli);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(JanelaCadastroCliente.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(JanelaCadastroCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            limparCampos();
+            listarCliente(); 
+    }//GEN-LAST:event_jEditarActionPerformed
     
     
 
@@ -590,7 +604,7 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     
     public void limparCampos(){
         
-                         jNome.setText("");//.toLowerCase());
+                         jNome.setText("");
                          jCPF.setText("");
                          jData.setText("");
                          jBairro.setText("");
@@ -688,7 +702,6 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField jBairro;
-    private javax.swing.JButton jBuscar;
     private javax.swing.JComboBox jCEstado;
     private javax.swing.JTextField jCPF;
     private javax.swing.JButton jCancelar;
@@ -717,7 +730,6 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     private javax.swing.JPanel jPainelMenu;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jPesquisar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTelefone;
     private javax.swing.JTable tabela;

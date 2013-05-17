@@ -5,8 +5,11 @@
 package bicicletaria.gui;
 
 import bicicletaria.dao.FornecedorJpaController;
+import bicicletaria.dao.exceptions.NonexistentEntityException;
 import bicicletaria.dao.exceptions.PreexistingEntityException;
 import bicicletaria.modelo.Fornecedor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -34,6 +37,8 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
     
     public JanelaCadastroFornecedor() {
         initComponents();
+        listarCliente();
+        configurarEventos();
     }
 
     /**
@@ -59,6 +64,12 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
         jEmail = new javax.swing.JLabel();
         jTNome = new javax.swing.JTextField();
         jTTelefone = new javax.swing.JTextField();
+        try {
+            javax.swing.text.MaskFormatter telefone = new javax.swing.text.MaskFormatter("(##)####-####");
+            jTTelefone = new javax.swing.JFormattedTextField(telefone);
+        }
+        catch (Exception e) {
+        }
         jTEmail = new javax.swing.JTextField();
         jPEndereco = new javax.swing.JPanel();
         jEndereco = new javax.swing.JLabel();
@@ -67,6 +78,12 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
         jBairro = new javax.swing.JLabel();
         jTEndereco = new javax.swing.JTextField();
         jTCep = new javax.swing.JTextField();
+        try {
+            javax.swing.text.MaskFormatter jCep = new javax.swing.text.MaskFormatter("#####-###");
+            jTCep = new javax.swing.JFormattedTextField(jCep);
+        }
+        catch (Exception e) {
+        }
         jTCidade = new javax.swing.JTextField();
         jTBairro = new javax.swing.JTextField();
         jEstado = new javax.swing.JLabel();
@@ -76,6 +93,9 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
         jBEditar = new javax.swing.JButton();
         jBExcluir = new javax.swing.JButton();
         jBCancelar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabela = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -85,34 +105,41 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
 
         jPIdentificacao.setBorder(javax.swing.BorderFactory.createTitledBorder("Identificação"));
 
+        jRG.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jRG.setText("RG/ Inscrição Estadual");
 
+        jRazaoSocial.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jRazaoSocial.setText("* Nome/ Razão Social");
 
-        jCNPJ.setText("CPF/ CNPJ / CGC");
+        jCNPJ.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jCNPJ.setText("* CPF/ CNPJ / CGC");
+
+        jTCnpj.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTCnpjKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPIdentificacaoLayout = new javax.swing.GroupLayout(jPIdentificacao);
         jPIdentificacao.setLayout(jPIdentificacaoLayout);
         jPIdentificacaoLayout.setHorizontalGroup(
             jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPIdentificacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPIdentificacaoLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jRG)
-                            .addComponent(jCNPJ))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTRG, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                            .addComponent(jTCnpj))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPIdentificacaoLayout.createSequentialGroup()
-                        .addComponent(jRazaoSocial)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(13, 13, 13)
+                .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jRG)
+                    .addComponent(jCNPJ))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTRG, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                    .addComponent(jTCnpj))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPIdentificacaoLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jRazaoSocial)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPIdentificacaoLayout.setVerticalGroup(
             jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,41 +148,50 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
                 .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jRazaoSocial))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRG)
                     .addComponent(jTRG, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPIdentificacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCNPJ)
-                    .addComponent(jTCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jTCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCNPJ))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPContato.setBorder(javax.swing.BorderFactory.createTitledBorder("Contato"));
 
+        jNome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jNome.setText("Nome");
 
+        jTelefone.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jTelefone.setText("Telefone");
 
+        jEmail.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jEmail.setText("E-mail");
+
+        jTTelefone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTTelefoneKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPContatoLayout = new javax.swing.GroupLayout(jPContato);
         jPContato.setLayout(jPContatoLayout);
         jPContatoLayout.setHorizontalGroup(
             jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPContatoLayout.createSequentialGroup()
-                .addGap(69, 69, 69)
+                .addGap(81, 81, 81)
                 .addGroup(jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jNome)
                     .addComponent(jTelefone)
-                    .addComponent(jEmail))
-                .addGap(18, 18, 18)
-                .addGroup(jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTNome, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                    .addComponent(jEmail)
+                    .addComponent(jNome))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTEmail))
-                .addContainerGap(118, Short.MAX_VALUE))
+                    .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         jPContatoLayout.setVerticalGroup(
             jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,7 +200,7 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
                 .addGroup(jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jNome)
                     .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTelefone)
                     .addComponent(jTTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -177,14 +213,19 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
 
         jPEndereco.setBorder(javax.swing.BorderFactory.createTitledBorder("Endereço"));
 
+        jEndereco.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jEndereco.setText("Endereço");
 
+        jCEP.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jCEP.setText("CEP");
 
+        jCidade.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jCidade.setText("Cidade");
 
+        jBairro.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jBairro.setText("Bairro");
 
+        jEstado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jEstado.setText("Estado");
 
         jCEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceara", "Distrito Federal", "Espirito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Para", "Paraiba", "Parana", "Pernambuco", "Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins" }));
@@ -195,29 +236,33 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
             jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPEnderecoLayout.createSequentialGroup()
                 .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPEnderecoLayout.createSequentialGroup()
-                        .addGap(78, 78, 78)
+                    .addGroup(jPEnderecoLayout.createSequentialGroup()
+                        .addGap(89, 89, 89)
                         .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jCEP)
-                            .addComponent(jCidade))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTCep, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                            .addComponent(jTCidade))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jBairro)
-                            .addComponent(jEstado))
+                            .addGroup(jPEnderecoLayout.createSequentialGroup()
+                                .addComponent(jCidade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPEnderecoLayout.createSequentialGroup()
+                                .addComponent(jCEP)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTCep, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jEstado)
+                            .addComponent(jBairro))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTBairro)))
+                            .addGroup(jPEnderecoLayout.createSequentialGroup()
+                                .addComponent(jCEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(21, 21, 21))
+                            .addComponent(jTBairro, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(jPEnderecoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jEndereco)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(47, 47, 47))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(35, 35, 35))
         );
         jPEnderecoLayout.setVerticalGroup(
             jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,13 +271,13 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
                 .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jEndereco)
                     .addComponent(jTEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCEP)
                     .addComponent(jTCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBairro)
                     .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCidade)
                     .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,7 +303,7 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
         jPPrincipalLayout.setVerticalGroup(
             jPPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPPrincipalLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
                 .addComponent(jPIdentificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPContato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,9 +322,19 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
 
         jBEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/edit.png"))); // NOI18N
         jBEditar.setText("Editar");
+        jBEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEditarActionPerformed(evt);
+            }
+        });
 
         jBExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/del.png"))); // NOI18N
         jBExcluir.setText("Excluir");
+        jBExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBExcluirActionPerformed(evt);
+            }
+        });
 
         jBCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bicicletaria/imagens/canc.png"))); // NOI18N
         jBCancelar.setText("Cancelar");
@@ -300,9 +355,9 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
                 .addComponent(jBEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65)
                 .addComponent(jBExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jBCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
+                .addGap(35, 35, 35))
         );
 
         jPBotoesLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCancelar, jBEditar, jBExcluir, jBInserir});
@@ -321,25 +376,75 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
 
         jPBotoesLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jBCancelar, jBEditar, jBExcluir, jBInserir});
 
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Razão Social", "Inscrição Instadual", "CPF/CNPJ/CGC", "Nome", "Telefone", "E-mail", "Endereço", "CEP", "Bairro", "Cidade", "Estado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabela.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jScrollPane1.setViewportView(tabela);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-677)/2, (screenSize.height-699)/2, 677, 699);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInserirActionPerformed
@@ -385,18 +490,172 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(JanelaCadastroFornecedor.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //listarCliente();
-            //limparCampos();
+            listarCliente();
+            limparCampos();
         }
         }catch (SQLException ex) {
             Logger.getLogger(JanelaCadastroFornecedor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBInserirActionPerformed
 
+    private void configurarEventos(){
+            tabela.addMouseListener(new MouseAdapter() {
+                @Override
+                    public void mouseClicked(MouseEvent e){
+                        //configurarTabela();    
+                        configurarEventosTabela();
+                        
+                    }
+            });
+    }
+    public void configurarEventosTabela(){    
+        
+            int indice = tabela.getSelectedRow();
+            
+            if(indice >= forn.size()){  
+                limparCampos();
+            }
+            
+            else{
+                    //Ideia, passar clientes para um array list e passalos para o textField
+                    jTRazaoSocial.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
+                    jTRG.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
+                    jTCnpj.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
+                    jTNome.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
+                    jTTelefone.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
+                    jTEmail.setText(tabela.getValueAt(tabela.getSelectedRow(), 5).toString());
+                    jTEndereco.setText(tabela.getValueAt(tabela.getSelectedRow(), 6).toString());
+                    jTCep.setText(tabela.getValueAt(tabela.getSelectedRow(), 7).toString());
+                    jTBairro.setText(tabela.getValueAt(tabela.getSelectedRow(), 8).toString());
+                    jTCidade.setText(tabela.getValueAt(tabela.getSelectedRow(), 9).toString()); 
+                   
+            }
+
+    }
     private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed
         setVisible(false);
     }//GEN-LAST:event_jBCancelarActionPerformed
 
+    private void jBEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEditarActionPerformed
+            
+            Fornecedor forne = new Fornecedor();
+            forne.setRazaoSocial(jTRazaoSocial.getText());//.toLowerCase());
+            forne.setRg(jTRG.getText());
+            forne.setCpf(jTCnpj.getText());
+            forne.setNome(jTNome.getText());
+            forne.setTelefone(jTTelefone.getText());
+            forne.setEmail(jTEmail.getText());
+            forne.setEndereco(jTEndereco.getText());
+            forne.setCep(jTCep.getText());
+            forne.setBairro(jTBairro.getText());
+            forne.setCidade(jTCidade.getText());
+            forne.setEstado(jCEstado.getSelectedItem().toString());
+         
+            try {
+                dao.edit(forne);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(JanelaCadastroFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(JanelaCadastroFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            limparCampos();
+            listarCliente();        
+    }//GEN-LAST:event_jBEditarActionPerformed
+
+    private void jTTelefoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTTelefoneKeyTyped
+        String caracteres="0987654321";
+            if(!caracteres.contains(evt.getKeyChar()+"")){
+                 evt.consume();
+            }        
+    }//GEN-LAST:event_jTTelefoneKeyTyped
+
+    private void jBExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExcluirActionPerformed
+          String cpf = jTCnpj.getText();
+        if(JOptionPane.showConfirmDialog(this, "Deseja excluir esse registro?") == 0){
+            try {
+                
+                    dao.destroy(cpf);
+
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        limparCampos();
+        listarCliente();
+    }//GEN-LAST:event_jBExcluirActionPerformed
+
+    private void jTCnpjKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTCnpjKeyTyped
+            String caracteres="0987654321";
+            if(!caracteres.contains(evt.getKeyChar()+"")){
+                 evt.consume();
+            }         // TODO add your handling code here:
+    }//GEN-LAST:event_jTCnpjKeyTyped
+    public void listarCliente(){
+            criarTabela();
+            
+            forn = dao.findFornecedorEntities();
+            
+            for(int i = 0; i < forn.size(); i++)
+            {  
+               tabela.setValueAt(forn.get(i).getRazaoSocial(), i, 0); 
+               tabela.setValueAt(forn.get(i).getRg(), i, 1); 
+               tabela.setValueAt(forn.get(i).getCpf(), i, 2);  
+               tabela.setValueAt(forn.get(i).getNome(), i, 3);
+               tabela.setValueAt(forn.get(i).getTelefone(), i, 4);
+               tabela.setValueAt(forn.get(i).getEmail(), i, 5);
+               tabela.setValueAt(forn.get(i).getEndereco(), i, 6);
+               tabela.setValueAt(forn.get(i).getCep(), i, 7);
+               tabela.setValueAt(forn.get(i).getBairro(), i, 8);
+               tabela.setValueAt(forn.get(i).getCidade(), i, 9);
+               tabela.setValueAt(forn.get(i).getEstado(), i, 10);     
+            
+            }        
+    }
+    
+    public void criarTabela(){
+         tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Razão Social", "Inscrição Instadual", "CPF/CNPJ/CGC", "Nome", "Telefone", "E-mail", "Endereço", "CEP", "Bairro", "Cidade", "Estado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabela.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jScrollPane1.setViewportView(tabela);
+    } 
+    public void limparCampos(){
+                    
+                    jTRazaoSocial.setText("");//.toLowerCase());
+                    jTRG.setText("");
+                    jTCnpj.setText("");
+                    jTNome.setText("");
+                    jTTelefone.setText("");
+                    jTEmail.setText("");
+                    jTEndereco.setText("");
+                    jTCep.setText("");
+                    jTBairro.setText("");
+                    jTCidade.setText("");
+                    //jCEstado.setText("");;
+    }
     /**
      * @param args the command line arguments
      */
@@ -450,8 +709,10 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
     private javax.swing.JPanel jPEndereco;
     private javax.swing.JPanel jPIdentificacao;
     private javax.swing.JPanel jPPrincipal;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel jRG;
     private javax.swing.JLabel jRazaoSocial;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTBairro;
     private javax.swing.JTextField jTCep;
     private javax.swing.JTextField jTCidade;
@@ -463,5 +724,6 @@ public class JanelaCadastroFornecedor extends javax.swing.JFrame {
     private javax.swing.JTextField jTRazaoSocial;
     private javax.swing.JTextField jTTelefone;
     private javax.swing.JLabel jTelefone;
+    private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 }

@@ -122,6 +122,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Editar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jEditarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jExcluir">
           <Properties>
@@ -215,42 +218,32 @@
                                   <EmptySpace min="248" pref="248" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jCEstado" max="32767" attributes="0"/>
+                              <Component id="jCep" max="32767" attributes="0"/>
+                              <Component id="jBairro" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jCEstado" max="32767" attributes="0"/>
-                                      <Component id="jCep" max="32767" attributes="0"/>
-                                      <Component id="jBairro" max="32767" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jLData" max="32767" attributes="0"/>
-                                                  <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jLBairro" max="32767" attributes="0"/>
-                                                  <EmptySpace min="82" pref="82" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jLCep" max="32767" attributes="0"/>
-                                                  <EmptySpace min="96" pref="96" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jLEstado" max="32767" attributes="0"/>
-                                                  <EmptySpace min="78" pref="78" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Component id="jData" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLData" pref="189" max="32767" attributes="0"/>
+                                          <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
                                       </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLBairro" max="32767" attributes="0"/>
+                                          <EmptySpace min="82" pref="82" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLCep" max="32767" attributes="0"/>
+                                          <EmptySpace min="96" pref="96" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLEstado" max="32767" attributes="0"/>
+                                          <EmptySpace min="78" pref="78" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="jData" max="32767" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace pref="25" max="32767" attributes="0"/>
-                                  <Component id="jPesquisar" min="-2" pref="153" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                                  <Component id="jBuscar" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -263,11 +256,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLNome" alignment="3" max="32767" attributes="0"/>
-                      <Component id="jPesquisar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jLNome" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="jNome" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -422,8 +411,14 @@
         <Component class="javax.swing.JTextField" name="jCidade">
         </Component>
         <Component class="javax.swing.JTextField" name="jCelular">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try {&#xd;&#xa;    javax.swing.text.MaskFormatter celular = new javax.swing.text.MaskFormatter(&quot;(##)####-####&quot;);&#xd;&#xa;    jCelular = new javax.swing.JFormattedTextField(celular);&#xd;&#xa;}&#xd;&#xa;catch (Exception e) {&#xd;&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="jTelefone">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try {&#xd;&#xa;    javax.swing.text.MaskFormatter telefone = new javax.swing.text.MaskFormatter(&quot;(##)####-####&quot;);&#xd;&#xa;    jTelefone = new javax.swing.JFormattedTextField(telefone);&#xd;&#xa;}&#xd;&#xa;catch (Exception e) {&#xd;&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="jCPF">
           <Events>
@@ -477,16 +472,6 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jPesquisar">
-        </Component>
-        <Component class="javax.swing.JButton" name="jBuscar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Buscar"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBuscarActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel1">
@@ -499,7 +484,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -510,15 +495,15 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="573" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="574" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <Component id="jScrollPane1" min="-2" pref="106" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -550,8 +535,7 @@
                     <Column editable="false" title="Email" type="java.lang.String"/>
                   </Table>
                 </Property>
-                <Property name="autoResizeMode" type="int" value="0"/>
-                <Property name="autoscrolls" type="boolean" value="false"/>
+                <Property name="autoResizeMode" type="int" value="3"/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">

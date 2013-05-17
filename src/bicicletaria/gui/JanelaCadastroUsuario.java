@@ -518,9 +518,6 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
              evt.consume();
         }
     }//GEN-LAST:event_textFieldCPFKeyTyped
-    public boolean isCellEditable(int row, int col) {  
-        return false;  
-    }
     public void limparCampos()
     {
         textFieldNome.setText("");
@@ -530,6 +527,34 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         jSenha.setText("");
 
     }
+        public void criarTabela(){
+       tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Nome", "CPF", "Data de Nascimento", "Login", "Senha"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -560,34 +585,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         });
     }
     
-    public void criarTabela(){
-       tabela.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Nome", "CPF", "Data de Nascimento", "Login", "Senha"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GrupoSexo;
     private javax.swing.JButton buttonCancelar;
