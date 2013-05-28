@@ -8,6 +8,9 @@ import bicicletaria.dao.UsuarioJpaController;
 import bicicletaria.dao.exceptions.PreexistingEntityException;
 import bicicletaria.gui.JanelaLogin;
 import bicicletaria.modelo.Usuario;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -17,8 +20,9 @@ import javax.persistence.Persistence;
  */
 public class Bicicletaria {
     public static EntityManagerFactory fabricabic = Persistence.createEntityManagerFactory("BicicletariaPU");
-    private static JanelaLogin janelaLogin;    
-   // private static Usuario usuario = new Usuario();
+    private static JanelaLogin janelaLogin;
+//  private static Usuario usuario = new Usuario();
+    public static Connection con;
     private static UsuarioJpaController dao = new UsuarioJpaController(fabricabic);
     
     
@@ -26,6 +30,7 @@ public class Bicicletaria {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws PreexistingEntityException, Exception {
+        con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bicicletaria", "postgres", "root");
         janelaLogin = new JanelaLogin();
         //janelaPrincipal = new JanelaPrincipal();
         janelaLogin.setVisible(true);
