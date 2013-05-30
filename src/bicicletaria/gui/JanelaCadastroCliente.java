@@ -9,6 +9,7 @@ import bicicletaria.dao.exceptions.NonexistentEntityException;
 import bicicletaria.dao.exceptions.PreexistingEntityException;
 import bicicletaria.modelo.Cliente;
 import bicicletaria.modelo.Usuario;
+import bicicletaria.negocio.ControladorCliente;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -38,6 +39,7 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     public static EntityManagerFactory fabricabic = Persistence.createEntityManagerFactory("BicicletariaPU");  
     private static Cliente cliente = new Cliente();
     private static ClienteJpaController dao = new ClienteJpaController(fabricabic);
+    private static ControladorCliente controladorCliente = new ControladorCliente();
     List<Cliente> cli = new ArrayList<Cliente>();
     
     public JanelaCadastroCliente() {
@@ -465,55 +467,21 @@ public class JanelaCadastroCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jCancelarActionPerformed
 
     private void jInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInserirActionPerformed
-
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bicicletaria", "postgres", "root");
-            Statement st = con.createStatement();
-            String query = "SELECT cpf FROM cliente WHERE cpf = '"+jCPF.getText()+"'";
-            ResultSet rs = st.executeQuery(query);
-            if(rs.next()){
-
-                JOptionPane.showMessageDialog(this," Já existe um cliente cadastrado com este CPF");
-
-            }
-            else if(jNome.getText().equals("")||jCPF.getText().equals("")){
-                JOptionPane.showMessageDialog(null,"Preencha os campos Obrigatórios *", "Error",1);
-            }
-            else{
-
-                    cliente.setNome(jNome.getText());//.toLowerCase());
-                    cliente.setCpf(jCPF.getText());
-                    cliente.setDatanascimento(jData.getText());
-                    cliente.setBairro(jBairro.getText());
-                    cliente.setEndereco(jEndereco.getText());
-                    cliente.setCep(jCep.getText());
-                    cliente.setTelefone(jTelefone.getText());
-                    cliente.setCelular(jCelular.getText());
-                    cliente.setEmail(jEmail.getText());
-                    cliente.setCidade(jCidade.getText());
-                    cliente.setEstado(jCEstado.getSelectedItem().toString());
-
-            try {
-                dao.create(cliente);
-                JOptionPane.showMessageDialog(null, jNome.getText()+ " Inserido com Sucesso!! ");
-            } catch (PreexistingEntityException ex) {
-                Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            listarCliente();
-            limparCampos();
-        }
-        }catch (SQLException ex) {
-            Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //limparCampos();
-        //listarCliente();
+        cliente.setNome(jNome.getText());
+        cliente.setCpf(jCPF.getText());
+        cliente.setDatanascimento(jData.getText());
+        cliente.setBairro(jBairro.getText());
+        cliente.setEndereco(jEndereco.getText());
+        cliente.setCep(jCep.getText());
+        cliente.setTelefone(jTelefone.getText());
+        cliente.setCelular(jCelular.getText());
+        cliente.setEmail(jEmail.getText());
+        cliente.setCidade(jCidade.getText());
+        cliente.setEstado(jCEstado.getSelectedItem().toString());
+        controladorCliente.inserir(cliente);
+        JOptionPane.showMessageDialog(this, controladorCliente.getMensagem());
+        listarCliente();
+        limparCampos();
     }//GEN-LAST:event_jInserirActionPerformed
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
