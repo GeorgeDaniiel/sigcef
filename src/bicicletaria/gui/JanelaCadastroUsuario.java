@@ -9,13 +9,10 @@ import bicicletaria.dao.UsuarioJpaController;
 import bicicletaria.dao.exceptions.NonexistentEntityException;
 import bicicletaria.dao.exceptions.PreexistingEntityException;
 import bicicletaria.modelo.Usuario;
+import bicicletaria.negocio.ControladorUsuario;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,9 +23,6 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 //import javax.swing.JOptionPane;
 
@@ -39,18 +33,16 @@ import javax.swing.table.DefaultTableModel;
 public class JanelaCadastroUsuario extends javax.swing.JFrame {
     
     public static EntityManagerFactory fabricabic = Persistence.createEntityManagerFactory("BicicletariaPU");  
-    private static Usuario usuario = new Usuario();
+    private static Usuario usuario;
     private static UsuarioJpaController dao = new UsuarioJpaController(fabricabic);
+    private static ControladorUsuario controladorUsuario = new ControladorUsuario();
    
     List<Usuario> usu = new ArrayList<Usuario>();
     
     public JanelaCadastroUsuario() {
-                
         initComponents();
         listarUsuarios();
         configurarEventos();
-        
-        
     }
 
     /**
@@ -365,44 +357,17 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
 }
     
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-
-        try {
-               Class.forName("org.postgresql.Driver");
-            } catch(ClassNotFoundException ex) {
-                Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                Statement st = Bicicletaria.con.createStatement();
-                String query = "SELECT cpf FROM usuario WHERE cpf = '"+textFieldCPF.getText()+"'";
-                ResultSet rs = st.executeQuery(query);
-                if(rs.next()){
-                       JOptionPane.showMessageDialog(this," Já existe um usuário cadastrado com este CPF");
-                }
-                else if(textFieldNome.getText().equals("")||textFieldCPF.getText().equals("")){  
-                    JOptionPane.showMessageDialog(null,"Campo Vazio", "Error",1);
-                }
-                else{
-                    usuario.setNome(textFieldNome.getText().toLowerCase());
-                    usuario.setCpf(textFieldCPF.getText());
-                    usuario.setTipousuario(escolheTipo());
-                    usuario.setDatanascimento(textFieldAnoNascimento.getText());
-                    usuario.setLogin(textFieldLogin.getText().toLowerCase());
-                    usuario.setSenha(jSenha.getText());
-//                  confirmarSenha(jConfirmarSenha.getText());
-                    try {
-                        dao.create(usuario);
-//                      JOptionPane.showMessageDialog(null," Já existe um usuário cadastrado com este CPF");
-                    } catch (PreexistingEntityException ex) {
-                        Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (Exception ex) {
-                        Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    listarUsuarios();
-                    limparCampos();
-                }
-            } catch(SQLException ex) {
-                Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        usuario = new Usuario();
+        usuario.setNome(textFieldNome.getText().toLowerCase());
+        usuario.setCpf(textFieldCPF.getText());
+        usuario.setTipousuario(escolheTipo());
+        usuario.setDatanascimento(textFieldAnoNascimento.getText());
+        usuario.setLogin(textFieldLogin.getText().toLowerCase());
+        usuario.setSenha(jSenha.getText());
+        controladorUsuario.inserir(usuario);
+        JOptionPane.showMessageDialog(this, controladorUsuario.getMensagem());
+        listarUsuarios();
+        limparCampos();
     }//GEN-LAST:event_buttonOKActionPerformed
    
     private void jEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditarActionPerformed
