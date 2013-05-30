@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 //import javax.swing.JOptionPane;
 
@@ -36,13 +37,16 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     private static Usuario usuario;
     private static UsuarioJpaController dao = new UsuarioJpaController(fabricabic);
     private static ControladorUsuario controladorUsuario = new ControladorUsuario();
+    //private javax.swing.JTable tabela;
+  
    
     List<Usuario> usu = new ArrayList<Usuario>();
     
     public JanelaCadastroUsuario() {
         initComponents();
-        listarUsuarios();
+        //listarUsuarios();
         configurarEventos();
+        criarTabela();
     }
 
     /**
@@ -53,6 +57,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+		modeloTabela = new DefaultTableModel();
         GrupoSexo = new javax.swing.ButtonGroup();
         panelInformacoesBasicas = new javax.swing.JPanel();
         labelNome = new javax.swing.JLabel();
@@ -60,6 +65,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         labelCPF = new javax.swing.JLabel();
         labelTipoUsuario = new javax.swing.JLabel();
         textFieldCPF = new javax.swing.JTextField();
+		
         try {
             javax.swing.text.MaskFormatter jcpf = new javax.swing.text.MaskFormatter("###.###.###-##");
             textFieldCPF = new javax.swing.JFormattedTextField(jcpf);
@@ -90,6 +96,14 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         tabela = new javax.swing.JTable();
         jExcluir = new javax.swing.JButton();
 
+		tabela.setModel(modeloTabela);
+        
+        modeloTabela.addColumn("Nome");
+        modeloTabela.addColumn("CPF");
+        modeloTabela.addColumn("Data de Nascimento");
+        modeloTabela.addColumn("Login");
+        modeloTabela.addColumn("Senha");
+		
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar usuário");
         setAlwaysOnTop(true);
@@ -255,7 +269,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 jEditarActionPerformed(evt);
             }
         });
-
+		/*
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -280,7 +294,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
-        });
+        });*/
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
@@ -366,7 +380,8 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         usuario.setSenha(jSenha.getText());
         controladorUsuario.inserir(usuario);
         JOptionPane.showMessageDialog(this, controladorUsuario.getMensagem());
-        listarUsuarios();
+        //listarUsuarios();
+        criarTabela();
         limparCampos();
     }//GEN-LAST:event_buttonOKActionPerformed
    
@@ -388,7 +403,8 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
                 Logger.getLogger(JanelaCadastroUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }
             limparCampos();
-            listarUsuarios();
+            criarTabela();
+            //listarUsuarios();
     }//GEN-LAST:event_jEditarActionPerformed
 
     public void configurarEventosTabela(){
@@ -440,11 +456,12 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             }
         }
         limparCampos();
-        listarUsuarios();
-       
+        //listarUsuarios();
+        criarTabela();
         
     }//GEN-LAST:event_jExcluirActionPerformed
    
+    /*
     public void listarUsuarios(){
             criarTabela();         
             usu = dao.findUsuarioEntities();
@@ -458,6 +475,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
             }
             
         }
+        */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
   
     }//GEN-LAST:event_tabelaMouseClicked
@@ -487,32 +505,18 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
         jSenha.setText("");
 
     }
-        public void criarTabela(){
-       tabela.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Nome", "CPF", "Data de Nascimento", "Login", "Senha"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+   public void criarTabela(){
+       //Lembrar de colocar os campos não editável 
+       //não esquecer
+       
+         List<Usuario> usuario = new ArrayList<Usuario>();
+        modeloTabela.setNumRows(0);
+        usuario = dao.findUsuarioEntities();
+        for (Usuario u : usuario) {
+            modeloTabela.addRow(new Object[]{u.getNome(), u.getCpf(), u.getDatanascimento(), u.getLogin(), u.getSenha()});
+        }
+        int t = usuario.size();
+        tabela.changeSelection(t == 0 ? 0 : t - 1, 0, false, false);
     }
     
     /**
@@ -547,7 +551,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup GrupoSexo;
+     private javax.swing.ButtonGroup GrupoSexo;
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonOK;
     private javax.swing.JPasswordField jConfirmarSenha;
@@ -567,6 +571,7 @@ public class JanelaCadastroUsuario extends javax.swing.JFrame {
     private javax.swing.JPanel panelInformacoesBasicas;
     private javax.swing.JPanel panelLoginSenha;
     private javax.swing.JTable tabela;
+    private DefaultTableModel modeloTabela;
     private javax.swing.JTextField textFieldAnoNascimento;
     private javax.swing.JTextField textFieldCPF;
     private javax.swing.JTextField textFieldLogin;
